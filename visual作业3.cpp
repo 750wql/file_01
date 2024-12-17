@@ -117,16 +117,31 @@ void shouyin(BookData* obj,fstream &file,int a1,int a2,int a3)
 			if(!strcmp(id4,obj[j].getIsbn())&&strlen(id4)==strlen(obj[j].getIsbn()))
 			{
 				cout<<"已找到该书"<<endl;
-				cout<<"请输入要买的数量：";
-				cin>>c;
-				k=1;
-				break;
+				do
+				{
+					cout<<"请输入要买的数量：";
+					cin>>c;
+					if(c>obj[j].getQtyOnHand())
+					{
+						cout<<"库存不足，重新输入"<<endl;
+					}
+					else 
+					{
+						k=1;
+						break;
+					}
+				}while(k!=1);
+				if(k==1) break;
 			}
-			if(j==99)
+			else if(j==99)
 			{
 				cout<<"查无此书,是否再次查找（Y/N)";
 				cin>>judge;
-				if(judge=='Y') break;
+				if(judge=='Y')
+				{
+					j=0;
+					break;
+				}
 				else return;
 			}
 			else j++;
@@ -288,7 +303,7 @@ void findbook(BookData* obj,fstream &file)
 			if(j==99)
 			{
 				cout<<"查无此书";
-				break;
+				findbook(obj,file);
 			}
 			else j++;
 		}
@@ -322,7 +337,7 @@ void editbook(BookData* obj,fstream &file)
 			if(j==99)
 			{
 				cout<<"查无此书";
-				break;
+				editbook(obj,file);
 			}
 			else j++;
 		}
@@ -355,7 +370,7 @@ void deletebook(BookData* obj,fstream &file)
 			if(j==99)
 			{
 				cout<<"查无此书";
-				break;
+				deletebook(obj,file);
 			}
 			else j++;
 		}

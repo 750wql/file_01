@@ -69,7 +69,7 @@ public:
 		author=new char[strlen(right.getAuthor())+1];
 		strcpy(author,right.getAuthor());
 		delete [] pub;
-		pub=new char[strlen(right.getPub()+1)];
+		pub=new char[strlen(right.getPub())+1];
 		strcpy(pub,right.getPub());
 		delete [] dateAdded;
 		dateAdded=new char[strlen(right.getdateAdded())+1];
