@@ -20,6 +20,7 @@ void qtylist(BookData* obj,fstream &file);
 void allwslist(BookData* obj,fstream &file);
 void datelist(BookData* obj,fstream &file);
 int getnum(BookData* obj);
+
 int main()
 {
 	fstream dataFile;
@@ -33,7 +34,7 @@ int main()
 		cout<<"打开文件失败!"<<endl;
 		exit(0);
 	}
-	while(true)
+	while(true)//主菜单
 	{
 		cout<<"\n\t\txxx图书管理系统"<<endl;
 		cout<<"\t\t   主菜单"<<endl;
@@ -53,16 +54,16 @@ int main()
 		switch(choice1)
 		{
 			case 1:
-				shouyin(book,dataFile,0,0,0);
+				shouyin(book,dataFile,0,0,0);//收银
 				break;
 			case 2:
-				guanli(book,dataFile,ip);
+				guanli(book,dataFile,ip);//管理
 				break;
 			case 3:
-				baobiao(book,dataFile);
+				baobiao(book,dataFile);//报表
 				break;
 			case 4:
-				dataFile.close();
+				dataFile.close();//关闭
 				exit(0);
 
 
@@ -71,7 +72,7 @@ int main()
 	system("pause");
 	return 0;
 }
-void setall(BookData &obj)
+void setall(BookData &obj)//初始化
 {
 	char id[21]={'\0'},name[51]={'\0'};
 	int num,price;
@@ -103,7 +104,7 @@ void setall(BookData &obj)
 	obj.setdateAdded(adat);
 	obj.setwholeSale(ws);
 }
-void shouyin(BookData* obj,fstream &file,int a1,int a2,int a3)
+void shouyin(BookData* obj,fstream &file,int a1,int a2,int a3)//收银
 {
 	char id4[14]={'\0'};
 	int j=0,c=0,k=0,sum1=a1,sum2=a2,sum3=a3;
@@ -112,12 +113,12 @@ void shouyin(BookData* obj,fstream &file,int a1,int a2,int a3)
 	{
 		cout<<"请输入查找的书的编号：";
 		cin>>id4;
-		while(j<100)
+		while(j<100)//遍历
 		{
 			if(!strcmp(id4,obj[j].getIsbn())&&strlen(id4)==strlen(obj[j].getIsbn()))
 			{
 				cout<<"已找到该书"<<endl;
-				do
+				do//有效性检验
 				{
 					cout<<"请输入要买的数量：";
 					cin>>c;
@@ -183,7 +184,7 @@ void shouyin(BookData* obj,fstream &file,int a1,int a2,int a3)
 	}while(!strcmp(id4,obj[j].getIsbn()));
 }
 
-void guanli(BookData* obj,fstream &file,int &ip)
+void guanli(BookData* obj,fstream &file,int &ip)//管理
 {
 	int choice2;
 	cout<<"\n\t\txxx图书管理系统"<<endl;
@@ -206,16 +207,16 @@ void guanli(BookData* obj,fstream &file,int &ip)
 		switch(choice2)
 		{
 			case 1:
-				findbook(obj,file);
+				findbook(obj,file);//找书
 				return;
 			case 2:
-				addbook(obj,file,ip);
+				addbook(obj,file,ip);//加书
 				return;
 			case 3:
-				editbook(obj,file);
+				editbook(obj,file);//编书
 				return;
 			case 4:
-				deletebook(obj,file);
+				deletebook(obj,file);//删书
 				return;
 			case 5:
 				return;
@@ -224,7 +225,7 @@ void guanli(BookData* obj,fstream &file,int &ip)
 		}
 }
 
-void baobiao(BookData* obj,fstream &file)
+void baobiao(BookData* obj,fstream &file)//报表
 {
 	int choice4;
 	cout<<"\n\t\txxx图书管理系统"<<endl;
@@ -237,7 +238,7 @@ void baobiao(BookData* obj,fstream &file)
 	cout<<"6.日期列表\n";
 	cout<<"7.返回到主菜单\n\n";
 	cout<<"输入选择: ";
-	do
+	do//有效性检验
 		{
 			cout<<"输入选择\n请输入1~7之间的数 ";
 			cin>>choice4;
@@ -249,28 +250,28 @@ void baobiao(BookData* obj,fstream &file)
 		switch(choice4)
 		{
 			case 1:
-				booklist(obj,file);
+				booklist(obj,file);//书清单
 				return;
 			case 2:
-				retaillist(obj,file);
+				retaillist(obj,file);//零售表
 				return;
 			case 3:
-				wslist(obj,file);
+				wslist(obj,file);//成本表
 				return;
 			case 4:
-				qtylist(obj,file);
+				qtylist(obj,file);//库存表
 				return;
 			case 5:
-				allwslist(obj,file);
+				allwslist(obj,file);//销售表
 				return;
 			case 6:
-				datelist(obj,file);
+				datelist(obj,file);//日期表
 			case 7:
 				return;
 
 		}
 }
-void addbook(BookData* obj,fstream &file,int &ip)
+void addbook(BookData* obj,fstream &file,int &ip)//加书
 {
 	setall(obj[ip]);
 	file<<obj[ip].getIsbn()<<endl;
@@ -283,37 +284,47 @@ void addbook(BookData* obj,fstream &file,int &ip)
 	file<<obj[ip].getwholeSale()<<endl;
 	ip++;
 }
-void findbook(BookData* obj,fstream &file)
+void findbook(BookData* obj,fstream &file)//找书
 {
-	char id1[14]={'\0'};
+	char id1[14]={'\0'},jg;
 	int j=0,k=0;
-	do
+	do                                                            //外遍历
 	{
 		cout<<"请输入查找的书的编号：";
 		cin>>id1;
-		while(j<100)
+		while(j<100)                                               //我也不知道这个循环放这干嘛
 		{
 			if(!strcmp(id1,obj[j].getIsbn())&&strlen(id1)==strlen(obj[j].getIsbn()))
 			{
 				cout<<"已找到该书"<<endl;
 				showbook(obj[j]);
 				k=1;
-				break;
+				goto main_menu;
 			}
 			if(j==99)
 			{
 				cout<<"查无此书";
-				findbook(obj,file);
+				cout<<"还要查书吗（Y/N)";
+				cin>>jg;
+				if(jg=='Y')
+				{
+					findbook(obj,file);
+				}
+				else
+				{
+					goto main_menu;
+				}
 			}
 			else j++;
 		}
-		if(k==1) break;
+main_menu:
+		break;
 	}while(strcmp(id1,obj[j].getIsbn()));
 }
-void editbook(BookData* obj,fstream &file)
+void editbook(BookData* obj,fstream &file)//编书，几乎同上
 {
 	int j=0,k=0;
-	char id2[14]={'\0'};
+	char id2[14]={'\0'},jg;
 	do
 	{
 		cout<<"请输入你想改的书的编号：";
@@ -332,21 +343,31 @@ void editbook(BookData* obj,fstream &file)
 				(obj[j].getdTstring(),new char[100]);
 				setall(obj[j]);
 				k=1;
-				break;
+				goto main_menu;
 			}
 			if(j==99)
 			{
 				cout<<"查无此书";
-				editbook(obj,file);
+				cout<<"还要查书吗（Y/N)";
+				cin>>jg;
+				if(jg=='Y')
+				{
+					findbook(obj,file);
+				}
+				else
+				{
+					goto main_menu;
+				}
 			}
 			else j++;
 		}
-		if(k==1) break;
+main_menu:
+		break;
 	}while(strcmp(id2,obj[j].getIsbn()));
 }
-void deletebook(BookData* obj,fstream &file)
+void deletebook(BookData* obj,fstream &file)//删书，几乎同上
 {
-	char id3[14]={'\0'};
+	char id3[14]={'\0'},jg;
 	int j=0,k=0;
 	do
 	{
@@ -361,54 +382,68 @@ void deletebook(BookData* obj,fstream &file)
 				delete [] obj[j].getIsbn();
 				delete [] obj[j].getBookTitle();
 				delete [] obj[j].getdTstring();
-				(obj[j].getQtyOnHand(),0);
-				(obj[j].getRetail(),0);
+				(obj[j].getQtyOnHand(),-1);
+				(obj[j].getRetail(),-1);
 				cout<<"已删除"<<endl;
 				k=1;
-				break;
+				goto main_menu;
 			}
 			if(j==99)
 			{
 				cout<<"查无此书";
-				deletebook(obj,file);
+				cout<<"还要查书吗（Y/N)";
+				cin>>jg;
+				if(jg=='Y')
+				{
+					findbook(obj,file);
+				}
+				else
+				{
+					goto main_menu;
+				}
 			}
 			else j++;
 		}
-		if(k==1) break;
+main_menu: 
+		break;
 	}while(strcmp(id3,obj[j].getIsbn()));
 }
-void showbook(BookData &obj)
+void showbook(BookData &obj)   //显示书信息
 {
-	cout<<"ISBN号："<<obj.getIsbn()<<endl;
-	cout<<"书 名:"<<obj.getBookTitle()<<endl;
-	cout<<"库存量："<<obj.getQtyOnHand()<<endl;
-	cout<<"零售价："<<obj.getRetail()<<endl;
-	cout<<"作者："<<obj.getAuthor()<<endl;
-	cout<<"出版社："<<obj.getPub()<<endl;
-	cout<<"进书日期:"<<obj.getdateAdded()<<endl;
-	cout<<"批发价："<<obj.getwholeSale()<<endl;
+	if(obj.getQtyOnHand()>=0&&obj.getIsbn()!=NULL)
+	{
+		cout<<"ISBN号："<<obj.getIsbn()<<endl;
+		cout<<"书 名:"<<obj.getBookTitle()<<endl;
+		cout<<"库存量："<<obj.getQtyOnHand()<<endl;
+		cout<<"零售价："<<obj.getRetail()<<endl;
+		cout<<"作者："<<obj.getAuthor()<<endl;
+		cout<<"出版社："<<obj.getPub()<<endl;
+		cout<<"进书日期:"<<obj.getdateAdded()<<endl;
+		cout<<"批发价："<<obj.getwholeSale()<<endl;
+	}
+	else return;
 }
-void booklist(BookData* obj,fstream &file)
+void booklist(BookData* obj,fstream &file)//书列表
 {
 	int i=0;
 	do
 	{
-		if(!(obj[i].getRetail())) continue;
+		if(obj[i].getRetail()<0) continue;
 		else 
 		{
 			showbook(obj[i]);
 			cout<<endl;
 			i++;
 		}
-	}while(obj[i].getRetail()>0);
+	}while(obj[i].getRetail()>=0||i<getnum(obj)-1);//只显示已经有的书
 	
 }
-void retaillist(BookData* obj,fstream &file)
+void retaillist(BookData* obj,fstream &file)//零售价表，几乎同上
 {
 	int i=0;
 	do
 	{
-		if(!(obj[i].getRetail())) continue;
+		if(obj[i].getRetail()>=0) continue;
 		else 
 		{
 			cout<<"零售价"<<i+1<<':';
@@ -417,9 +452,9 @@ void retaillist(BookData* obj,fstream &file)
 			i++;
 		}
 		
-	}while(obj[i].getRetail()>0);
+	}while(obj[i].getRetail()>=0);
 }
-void wslist(BookData* obj,fstream &file)
+void wslist(BookData* obj,fstream &file)//批发价表，几乎同上
 {
 	int i=0,sum=0;
 	do
@@ -437,16 +472,16 @@ void wslist(BookData* obj,fstream &file)
 	}while(obj[i].getRetail()>0);
 	cout<<"批发总额"<<sum<<endl;
 }
-int getnum(BookData* obj)
+int getnum(BookData* obj)//获取书的本书
 {
 	int i=0;
-	while(obj[i].getRetail()>0)
+	while(obj[i].getRetail()>=0)
 	{
 		i++;
 	}
 	return i;
 }
-void qtylist(BookData* obj,fstream &file)
+void qtylist(BookData* obj,fstream &file)//库存排序
 {
 	int i,j,minindex;
 	BookData t;
@@ -455,10 +490,11 @@ void qtylist(BookData* obj,fstream &file)
 		minindex=i;
 		for(j=i+1;j<getnum(obj);j++)
 		{
-			if(obj[j].getQtyOnHand()<obj[minindex].getQtyOnHand())
+			if(obj[j].getQtyOnHand()<obj[minindex].getQtyOnHand()&&obj[j].getQtyOnHand()>=0&&obj[minindex].getQtyOnHand()>=0)
 			{
 				minindex=j;
 			}
+			else continue;
 		}
 		if(minindex!=i)
 		{
@@ -468,7 +504,7 @@ void qtylist(BookData* obj,fstream &file)
 		}
 	}
 	i=0;
-	do
+	do//排序完显示
 	{
 		if(!(obj[i].getRetail()>0)) continue;
 		else 
@@ -479,7 +515,7 @@ void qtylist(BookData* obj,fstream &file)
 		}
 	}while(i<getnum(obj));
 }
-void allwslist(BookData* obj,fstream &file)
+void allwslist(BookData* obj,fstream &file)//销售排序，几乎同上
 {
 	int i,j,minindex;
 	BookData t;
@@ -512,7 +548,7 @@ void allwslist(BookData* obj,fstream &file)
 		}
 	}while(i<getnum(obj));
 }
-void datelist(BookData* obj,fstream &file)
+void datelist(BookData* obj,fstream &file)//日期排序，几乎同上
 {
 	int i,j,minindex;
 	BookData t;
